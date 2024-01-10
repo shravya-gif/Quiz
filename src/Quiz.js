@@ -1,16 +1,30 @@
-import React from 'react'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
 export default function Quiz() {
-    const getQuiz=async()=>{
-        try {
-           const response= await axios.get()
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  const [questions, setQuestions] = useState([]);
+
+  useEffect(() => {
+    const getQuiz = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/questions");
+        setQuestions(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getQuiz();
+  }, []);
+
   return (
     <div className='flex justify-center items-center h-screen'>
-      <h1>hii</h1>
+      {questions.map((ques, index) => (
+        <div key={index}>
+          <div>{ques.question}</div>
+          <div>{ques.answer}</div>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
